@@ -147,9 +147,7 @@ export const usePomodoro = () => {
       const timeForCurrentMode =
         prevState.mode === 'work'
           ? prevState.workTime
-          : prevState.mode === 'short-break'
-          ? prevState.breakTime
-          : prevState.longBreakTime;
+          : prevState.breakTime;
 
       return {
         ...prevState,
