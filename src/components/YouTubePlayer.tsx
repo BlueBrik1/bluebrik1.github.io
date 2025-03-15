@@ -4,10 +4,10 @@ import { extractVideoId } from '@/utils/youtube';
 
 interface YouTubePlayerProps {
   url: string;
-  isPlaying: boolean;
+  isPlaying: boolean; // We'll keep this prop but ignore it for continuous playback
 }
 
-const YouTubePlayer: React.FC<YouTubePlayerProps> = ({ url, isPlaying }) => {
+const YouTubePlayer: React.FC<YouTubePlayerProps> = ({ url }) => {
   const [videoId, setVideoId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -19,8 +19,8 @@ const YouTubePlayer: React.FC<YouTubePlayerProps> = ({ url, isPlaying }) => {
 
   if (!videoId) return null;
 
-  // Create YouTube embed URL with autoplay parameter based on isPlaying state
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${isPlaying ? '1' : '0'}&mute=0&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}`;
+  // Create YouTube embed URL with autoplay always set to 1
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&controls=0&showinfo=0&rel=0&loop=1&playlist=${videoId}`;
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

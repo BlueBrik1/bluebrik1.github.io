@@ -14,8 +14,8 @@ const Index = () => {
 
   return (
     <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      {/* YouTube player in background */}
-      <YouTubePlayer url={pomodoro.youtubeUrl} isPlaying={pomodoro.status === 'running'} />
+      {/* YouTube player in background - always playing */}
+      <YouTubePlayer url={pomodoro.youtubeUrl} isPlaying={true} />
       
       {/* Settings Button and Hide UI Button */}
       <SettingsDialog 

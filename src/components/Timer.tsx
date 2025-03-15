@@ -21,9 +21,9 @@ const Timer: React.FC<TimerProps> = ({ timeLeft, mode, isUIHidden }) => {
   const modeLabel = mode === 'work' ? 'Work' : mode === 'short-break' ? 'Short Break' : 'Long Break';
 
   return (
-    <div className="flex flex-col items-center justify-center z-10">
-      <h2 className="text-2xl opacity-50 mb-2 font-['Space_Mono']">{modeLabel}</h2>
-      <div className="text-9xl font-bold tracking-tighter font-['Space_Mono']">{formattedTime}</div>
+    <div className="flex flex-col items-center justify-center z-10 animate-fade-in">
+      <h2 className="text-2xl text-orange-500 opacity-50 mb-2 font-['Space_Mono']">{modeLabel}</h2>
+      <div className="text-[13.5rem] font-bold tracking-tighter text-orange-500 font-['Space_Mono']">{formattedTime}</div>
     </div>
   );
 };
