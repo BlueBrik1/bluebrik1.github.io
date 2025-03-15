@@ -1,12 +1,42 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import { usePomodoro } from '@/hooks/usePomodoro';
+import Timer from '@/components/Timer';
+import TimerControls from '@/components/TimerControls';
+import YouTubeInput from '@/components/YouTubeInput';
+import YouTubePlayer from '@/components/YouTubePlayer';
 
 const Index = () => {
+  const pomodoro = usePomodoro();
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
+    <div className="bg-black text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
+      {/* YouTube player in background */}
+      <YouTubePlayer url={pomodoro.youtubeUrl} isPlaying={pomodoro.isActive} />
+      
+      {/* Main timer display */}
+      <Timer 
+        timeLeft={pomodoro.timeLeft} 
+        mode={pomodoro.mode} 
+      />
+      
+      {/* Timer controls */}
+      <TimerControls 
+        isActive={pomodoro.isActive}
+        mode={pomodoro.mode}
+        onStart={pomodoro.startTimer}
+        onPause={pomodoro.pauseTimer}
+        onReset={pomodoro.resetTimer}
+        onSkip={pomodoro.skipToNextMode}
+        onModeChange={pomodoro.switchMode}
+        isVisible={pomodoro.isControlsVisible}
+      />
+      
+      {/* YouTube URL input */}
+      <YouTubeInput 
+        onSubmit={pomodoro.setYoutubeUrl} 
+        isVisible={pomodoro.isControlsVisible}
+      />
     </div>
   );
 };
