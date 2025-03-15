@@ -18,12 +18,12 @@ const Timer: React.FC<TimerProps> = ({ timeLeft, mode, isUIHidden }) => {
   const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   // Get label based on mode
-  const modeLabel = mode === 'work' ? 'Work' : mode === 'short-break' ? 'Short Break' : 'Long Break';
+  const modeLabel = mode === 'work' ? 'Work' : 'Break';
 
   return (
     <div className="flex flex-col items-center justify-center z-10 animate-fade-in">
       <h2 className="text-2xl text-orange-500 opacity-50 mb-2 font-['Space_Mono']">{modeLabel}</h2>
-      <div className="text-[13.5rem] font-bold tracking-tighter text-orange-500 font-['Space_Mono']">{formattedTime}</div>
+      <div className="text-[13.5rem] font-bold tracking-tighter text-orange-500 font-['Space_Mono'] drop-shadow-[0_0_30px_rgba(249,115,22,0.5)]">{formattedTime}</div>
     </div>
   );
 };

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { getRandomQuote } from '@/utils/quotes';
 
@@ -10,9 +9,7 @@ interface PomodoroState {
   mode: TimerMode;
   status: TimerStatus;
   workTime: number;
-  shortBreakTime: number;
-  longBreakTime: number;
-  cyclesBeforeLongBreak: number;
+  breakTime: number;
   completedWorkCycles: number;
   youtubeUrl: string;
   isControlsVisible: boolean;
@@ -28,14 +25,12 @@ export const usePomodoro = () => {
     mode: 'work',
     status: 'paused',
     workTime: 25 * 60, // 25 minutes in seconds
-    shortBreakTime: 5 * 60, // 5 minutes in seconds
-    longBreakTime: 15 * 60, // 15 minutes in seconds
-    cyclesBeforeLongBreak: 4,
+    breakTime: 5 * 60, // 5 minutes in seconds
     completedWorkCycles: 0,
     youtubeUrl: '',
     isControlsVisible: true,
     isUIHidden: false,
-    currentSessionIntervals: 4,
+    currentSessionIntervals: 1, // Default to 1 interval
     currentIntervalCount: 0,
     motivationalQuote: getRandomQuote(),
   });
@@ -120,13 +115,8 @@ export const usePomodoro = () => {
         }
 
         // Not all intervals are done yet, go to break
-        if (completedCycles % prevState.cyclesBeforeLongBreak === 0) {
-          nextMode = 'long-break';
-          nextTimeLeft = prevState.longBreakTime;
-        } else {
-          nextMode = 'short-break';
-          nextTimeLeft = prevState.shortBreakTime;
-        }
+        nextMode = 'short-break';
+        nextTimeLeft = prevState.breakTime;
       } else {
         // Coming from a break, go back to work
         nextMode = 'work';
@@ -158,7 +148,7 @@ export const usePomodoro = () => {
         prevState.mode === 'work'
           ? prevState.workTime
           : prevState.mode === 'short-break'
-          ? prevState.shortBreakTime
+          ? prevState.breakTime
           : prevState.longBreakTime;
 
       return {
@@ -179,9 +169,7 @@ export const usePomodoro = () => {
       const timeForMode =
         mode === 'work'
           ? prevState.workTime
-          : mode === 'short-break'
-          ? prevState.shortBreakTime
-          : prevState.longBreakTime;
+          : prevState.breakTime;
 
       return {
         ...prevState,
@@ -214,15 +202,14 @@ export const usePomodoro = () => {
   }) => {
     setState((prevState) => {
       // Calculate the interval work time based on total focus duration and number of intervals
-      const intervalWorkTime = focusDuration / intervals;
+      const intervalWorkTime = Math.floor(focusDuration / intervals);
       
       return {
         ...prevState,
         workTime: intervalWorkTime,
-        shortBreakTime: breakTime,
+        breakTime: breakTime,
         currentSessionIntervals: intervals,
-        timeLeft: prevState.mode === 'work' ? intervalWorkTime : 
-                  prevState.mode === 'short-break' ? breakTime : prevState.longBreakTime,
+        timeLeft: prevState.mode === 'work' ? intervalWorkTime : breakTime,
         status: 'paused',
         currentIntervalCount: 0,
       };

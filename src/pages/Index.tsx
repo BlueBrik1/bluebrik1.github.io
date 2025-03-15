@@ -20,7 +20,7 @@ const Index = () => {
       {/* Settings Button and Hide UI Button */}
       <SettingsDialog 
         focusDuration={pomodoro.workTime * pomodoro.currentSessionIntervals}
-        breakTime={pomodoro.shortBreakTime}
+        breakTime={pomodoro.breakTime}
         intervals={pomodoro.currentSessionIntervals}
         onSave={pomodoro.updateSettings}
       />
