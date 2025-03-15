@@ -43,6 +43,7 @@ const Index = () => {
             timeLeft={pomodoro.timeLeft} 
             mode={pomodoro.mode} 
             isUIHidden={pomodoro.isUIHidden}
+            modeJustChanged={pomodoro.modeJustChanged}
           />
           
           {/* Timer controls */}

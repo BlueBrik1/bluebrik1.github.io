@@ -17,6 +17,7 @@ interface PomodoroState {
   currentSessionIntervals: number;
   currentIntervalCount: number;
   motivationalQuote: string;
+  modeJustChanged: boolean;
 }
 
 export const usePomodoro = () => {
@@ -33,7 +34,22 @@ export const usePomodoro = () => {
     currentSessionIntervals: 1, // Default to 1 interval
     currentIntervalCount: 0,
     motivationalQuote: getRandomQuote(),
+    modeJustChanged: false,
   });
+
+  // Reset mode change flag after 3 seconds
+  useEffect(() => {
+    if (state.modeJustChanged) {
+      const timer = setTimeout(() => {
+        setState(prevState => ({
+          ...prevState,
+          modeJustChanged: false
+        }));
+      }, 3000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [state.modeJustChanged]);
 
   // Timer logic
   useEffect(() => {
@@ -130,6 +146,7 @@ export const usePomodoro = () => {
         status: status,
         completedWorkCycles: completedCycles,
         currentIntervalCount: intervalCount,
+        modeJustChanged: true, // Set flag when mode changes
       };
     });
   }, []);
@@ -159,7 +176,11 @@ export const usePomodoro = () => {
 
   const skipToNextMode = useCallback(() => {
     handleTimerComplete();
-    setState((prevState) => ({ ...prevState, status: 'paused' }));
+    setState((prevState) => ({ 
+      ...prevState, 
+      status: 'paused',
+      modeJustChanged: true // Set flag when mode changes
+    }));
   }, [handleTimerComplete]);
 
   const switchMode = useCallback((mode: TimerMode) => {
@@ -174,6 +195,7 @@ export const usePomodoro = () => {
         mode,
         timeLeft: timeForMode,
         status: 'paused',
+        modeJustChanged: true, // Set flag when mode changes
       };
     });
   }, []);
@@ -190,6 +212,7 @@ export const usePomodoro = () => {
       status: 'paused',
       currentIntervalCount: 0,
       motivationalQuote: getRandomQuote(),
+      modeJustChanged: true, // Set flag when mode changes
     }));
   }, []);
 
@@ -210,6 +233,7 @@ export const usePomodoro = () => {
         timeLeft: prevState.mode === 'work' ? intervalWorkTime : breakTime,
         status: 'paused',
         currentIntervalCount: 0,
+        modeJustChanged: true, // Set flag when mode changes
       };
     });
   }, []);
