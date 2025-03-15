@@ -4,9 +4,12 @@ import React from 'react';
 interface TimerProps {
   timeLeft: number;
   mode: 'work' | 'short-break' | 'long-break';
+  isUIHidden: boolean;
 }
 
-const Timer: React.FC<TimerProps> = ({ timeLeft, mode }) => {
+const Timer: React.FC<TimerProps> = ({ timeLeft, mode, isUIHidden }) => {
+  if (isUIHidden) return null;
+
   // Convert seconds to minutes and seconds
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
